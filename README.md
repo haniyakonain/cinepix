@@ -18,7 +18,7 @@ Live Showtimes: Check real-time movie showtimes and booking availability. <br>
 To get started with CinePix on your local machine, follow these steps: <br>
 
 <h3>Clone the repository:</h3>
-git clone https://github.com/your-username/cinepix.git <br>
+git clone git@github.com:haniyakonain/cinepix.git <br>
 cd cinepix <br>
 
 <h3>Install dependencies:</h3>
