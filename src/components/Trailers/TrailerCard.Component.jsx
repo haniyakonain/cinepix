@@ -28,9 +28,9 @@ const TrailerCard = () => {
             // Skip if movie already added or lacks poster
             if (seenMovieIds.has(movie.id) || !movie.poster_path) continue;
 
-            // Fetch movie trailers
+            // Fetch movie trailers in multiple languages (English, Hindi, Telugu)
             const trailerRes = await axios.get(
-              `https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${apiKey}`
+              `https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${apiKey}&language=en-US,hi,te`
             );
 
             const trailer = trailerRes.data.results.find(

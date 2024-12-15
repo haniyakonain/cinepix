@@ -14,17 +14,19 @@ const MoviePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [cast, setCast] = useState([]);
-  const [similarMovies, setSimilarMovies] = useState([]);
-  const [recommendedMovies, setRecommendedMovies] = useState([]);
-  const [movie, setMovie] = useState({});
+  const [movieData, setMovieData] = useState({
+    cast: [],
+    similarMovies: [],
+    recommendedMovies: [],
+    movie: {},
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-
+        
         // Fetch movie details, cast, similar and recommended movies in parallel
         const [
           castResponse,
@@ -39,15 +41,15 @@ const MoviePage = () => {
         ]);
 
         // Save the fetched data into the state
-        setCast(castResponse.data.cast);
-        setSimilarMovies(similarResponse.data.results);
-        setRecommendedMovies(recommendedResponse.data.results);
-        setMovie(movieResponse.data);
+        setMovieData({
+          cast: castResponse.data.cast,
+          similarMovies: similarResponse.data.results,
+          recommendedMovies: recommendedResponse.data.results,
+          movie: movieResponse.data,
+        });
 
         // Simulate a minimum loading duration of 2 seconds
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 100);
+        setTimeout(() => setIsLoading(false), 100);
       } catch (error) {
         console.error("Error fetching data:", error);
         setIsLoading(false); // Set loading to false in case of an error
@@ -63,44 +65,6 @@ const MoviePage = () => {
 
   const handleMovieClick = () => {
     navigate(`/movie/${id}`);
-  };
-
-  const settingsCast = {
-    arrows: true,
-    slidesToShow: 4,
-    infinite: true,
-    dots: false,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 2000,
-    cssEase: "linear",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: false,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
   };
 
   const settings = {
@@ -119,8 +83,6 @@ const MoviePage = () => {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: true,
-          dots: true,
         },
       },
       {
@@ -128,7 +90,6 @@ const MoviePage = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2,
         },
       },
       {
@@ -141,17 +102,23 @@ const MoviePage = () => {
     ],
   };
 
+  const settingsCast = {
+    ...settings,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+  };
+
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
         <>
-          <MovieHero movie={movie} />
+          <MovieHero movie={movieData.movie} />
           <div className="my-12 container px-4 lg:ml-20 lg:w-2/1">
             <div className="flex flex-col items-start gap-3">
-              <h1 className="text-gray-800 font-bold text-2xl">About the movie</h1>
-              <p>{movie.overview}</p>
+              <h1 className="text-white-800 font-bold text-2xl">About the movie</h1>
+              <p>{movieData.movie.overview}</p>
             </div>
 
             <div className="my-8">
@@ -181,9 +148,9 @@ const MoviePage = () => {
 
             {/* Cast & Crew */}
             <div className="my-8">
-              <h2 className="text-gray-800 font-bold text-2xl mb-4">Cast and Crew</h2>
+              <h2 className="text-white-800 font-bold text-2xl mb-4">Cast and Crew</h2>
               <Slider {...settingsCast}>
-                {cast.map((castData) => (
+                {movieData.cast.map((castData) => (
                   <Cast
                     key={castData.id}
                     image={castData.profile_path}
@@ -198,16 +165,12 @@ const MoviePage = () => {
               <hr />
             </div>
 
-            <div className="my-8">
-              <hr />
-            </div>
-
             {/* Recommended Movies */}
             <div className="my-8">
               <PosterSlider
                 config={settings}
                 title="Recommended Movies"
-                posters={recommendedMovies}
+                posters={movieData.recommendedMovies}
                 onMovieClick={handleMovieClick}
               />
             </div>
@@ -221,7 +184,7 @@ const MoviePage = () => {
               <PosterSlider
                 config={settings}
                 title="Similar Movies"
-                posters={similarMovies}
+                posters={movieData.similarMovies}
                 onMovieClick={handleMovieClick}
               />
             </div>

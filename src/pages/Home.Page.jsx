@@ -73,7 +73,7 @@ const HomePage = () => {
     fetchNowPlaying();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
     const fetchTrailers = async () => {
       try {
         const response = await tmdbApi.get("/movie/upcoming", {
@@ -83,6 +83,9 @@ const HomePage = () => {
           }
         });
         
+        // Log response data to check for duplicates or issues
+        console.log(response.data.results);
+
         // Transform API data to match your existing trailer card structure
         const transformedTrailers = response.data.results.slice(0, 12).map(movie => ({
           id: movie.id,
@@ -97,7 +100,17 @@ const HomePage = () => {
           description: movie.overview
         }));
 
-        setTrailerMovies(transformedTrailers);
+        // Log transformed trailers to ensure proper data
+        console.log(transformedTrailers);
+
+        // Filter duplicates based on movie ID
+        const uniqueTrailers = Array.from(
+          new Map(
+            transformedTrailers.map((movie) => [movie.id, movie]) // Map movie ID to the movie object
+          ).values()
+        );
+
+        setTrailerMovies(uniqueTrailers);
       } catch (error) {
         console.error("Error fetching upcoming movies for trailers:", error);
         // Fallback to static data if needed
@@ -131,8 +144,8 @@ const HomePage = () => {
             </div>
             <PosterSlider
               posters={recommendedMovies}
-              title="Latest Releases"
-              subtitle="Brand new movies to watch"
+              title="Trending Releases"
+              subtitle="Popular movies to watch"
               isDark={false}
             />
           </div>
@@ -183,7 +196,7 @@ const HomePage = () => {
       </div>
 
       {/* Trailers Section */}
-      <div id="trailers" className="container mx-auto px-4 py-16">
+      <div id="trailers" className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -199,7 +212,9 @@ const HomePage = () => {
             <p className="text-gray-300 mb-8">
               Watch the latest movie trailers and upcoming releases
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {/* Display Unique Trailers */}
+            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
               {trailerMovies.map((movie) => (
                 <TrailerCard key={movie.id} movie={movie} />
               ))}
@@ -301,28 +316,18 @@ const HomePage = () => {
                   >
                     <h4 className="text-red-500 font-semibold mb-2">User Reviews</h4>
                     <p className="text-gray-300 text-sm">
-                      Read authentic reviews from movie enthusiasts
+                      Get insights from other moviegoers before making your decision
                     </p>
                   </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     className="p-4 bg-navy-800/50 rounded-lg"
                   >
-                    <h4 className="text-red-500 font-semibold mb-2">Special Events</h4>
+                    <h4 className="text-red-500 font-semibold mb-2">Live Showtimes</h4>
                     <p className="text-gray-300 text-sm">
-                      Access to exclusive movie events and premieres
+                      Check real-time showtimes and booking availability
                     </p>
                   </motion.div>
-                </div>
-                <div className="mt-8">
-                  <h3 className="text-xl font-semibold text-white mb-4">
-                    Contact Us
-                  </h3>
-                  <div className="space-y-2 text-gray-300">
-                    <p>Email: support@cinepix.com</p>
-                    <p>Phone: +91 12378-4567</p>
-                    <p>Hours: 24/7 Customer Support</p>
-                  </div>
                 </div>
               </div>
             </div>
