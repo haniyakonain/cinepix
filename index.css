@@ -1,0 +1,295 @@
+/* Tailwind imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global body styling */
+body {
+  @apply bg-darkBg-800 text-white;
+  background: linear-gradient(to bottom, #0a1128, #1a237e); /* Background gradient */
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif; /* Ensure a more readable font */
+  color: #ffffff; /* Ensure text is white by default */
+  /* Removed animation */
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-darkBg-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-cinepix-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-cinepix-600;
+}
+
+/* Code font */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Slick carousel styling */
+.hero-carousel {
+  margin-top: 0 !important;
+  position: relative;
+  z-index: 10;
+  /* Removed animation */
+}
+
+.hero-carousel .slick-slide {
+  padding: 0;
+}
+
+.hero-carousel .slick-prev,
+.hero-carousel .slick-next {
+  z-index: 15; /* Ensure arrows are above content */
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.5); /* Add background for visibility */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  /* Removed fadeIn animation */
+}
+
+.hero-carousel .slick-prev {
+  left: 20px;
+}
+
+.hero-carousel .slick-next {
+  right: 20px;
+}
+
+.hero-carousel .slick-prev:before,
+.hero-carousel .slick-next:before {
+  font-size: 20px;
+  color: #ef4444 !important;
+}
+
+.hero-carousel .slick-dots {
+  bottom: 20px;
+}
+
+.hero-carousel .slick-dots li button:before {
+  color: white;
+}
+
+.slick-slide > div {
+  margin: 0 10px;
+}
+
+.slick-list {
+  margin: 0 -10px;
+}
+
+/* Nav styles */
+.nav-gradient {
+  background: linear-gradient(to right, #0a1128, #1a237e);
+}
+
+.nav-blur {
+  backdrop-filter: blur(10px);
+  background-color: rgba(10, 17, 40, 0.95);
+  /* Removed fadeIn animation */
+}
+
+/* Movie Showtimes Container */
+.movie-showtimes-container {
+  padding: 20px;
+  text-align: center;
+  /* Removed fadeIn animation */
+}
+
+/* Header Styling */
+header h1 {
+  font-size: 2.25rem; /* Increased font size for better visibility */
+  color: #fff;
+  margin-bottom: 10px;
+  /* Removed fadeIn animation */
+}
+
+header p {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+/* Movies List as a Grid */
+.movies-list {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center;
+  margin-top: 20px;
+  padding: 0 10px;
+  /* Removed fadeIn animation */
+}
+
+/* Movie Card Styling */
+.movie-card {
+  @apply bg-darkBg-700 p-5 rounded-lg max-w-xs cursor-pointer overflow-hidden transition-all duration-300 ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  /* Removed fade-in animation */
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  /* Removed hover animation */
+}
+
+/* Movie Poster Styling */
+.movie-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  /* Removed fadeIn animation */
+}
+
+/* Expanded Movie Card Styling */
+.movie-card.expanded {
+  background-color: #1a1a1a;
+  border: 2px solid #3498db;
+  /* Removed scale-in animation */
+}
+
+.movie-card.expanded .movie-details {
+  margin-top: 10px;
+  padding: 20px;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  background-color: #2a2a2a;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  /* Removed fade-in animation */
+}
+
+.movie-card.expanded p {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Movie Card Title */
+.movie-card h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-top: 10px;
+  text-align: center;
+  /* Removed fadeIn animation */
+}
+
+/* Movie Card Button */
+.movie-card button {
+  @apply bg-cinepix-600 text-white py-2 px-4 rounded transition-colors duration-300;
+  margin-top: 10px;
+  /* Removed buttonFadeIn animation */
+}
+
+.movie-card button:hover {
+  background-color: #2980b9;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .movies-list {
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+  }
+
+  .movie-card {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .movie-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .movie-card button {
+    padding: 12px 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .movies-list {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on smaller screens */
+  }
+
+  .movie-card {
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .movie-card h3 {
+    font-size: 1.2rem; /* Slightly smaller for smaller screens */
+  }
+
+  .movie-card button {
+    padding: 12px 15px; /* Adjusted padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .movies-list {
+    grid-template-columns: repeat(2, 1fr); /* Two columns for very small screens */
+  }
+
+  .movie-card {
+    padding: 10px;
+  }
+
+  .movie-card h3 {
+    font-size: 1rem;
+  }
+
+  .movie-card button {
+    padding: 8px 12px;
+  }
+}
+
+.trailer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.trailer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.trailer-video iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.movie-details {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.movie-details h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.movie-details p {
+  margin: 5px 0;
+  font-size: 14px;
+}
