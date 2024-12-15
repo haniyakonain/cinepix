@@ -28,75 +28,75 @@ Your app should now be running on http://localhost:3000. <br>
 
 <h2>Project Structure</h2>
 Here's an overview of the project's file structure: <br>
-CinePix/
-├── node_modules
-├── public/
-│   ├── cinepix.png
-│   ├── index.html
-│   └── manifest.json
-├── src/
-│   ├── App.js
-│   ├── components/
-│   │   ├── Booking/
-│   │   │   └── SeatSelection.Component.jsx
-│   │   ├── Cast/
-│   │   │   └── Cast.Component.jsx
-│   │   ├── Entertainment/
-│   │   │   └── EntertainmentCard.Component.jsx
-│   │   ├── Footer/
-│   │   │   └── Footer.Component.jsx
-│   │   ├── HeroCarousel/
-│   │   │   ├── Arrows.Component.jsx
-│   │   │   └── HeroCarousel.Component.jsx
-│   │   ├── HeroSection/
-│   │   │   └── Hero.Component.jsx
-│   │   ├── Loader/
-│   │   │   ├── Loader.css
-│   │   │   └── Loader.jsx
-│   │   ├── MovieHero/
-│   │   │   ├── MovieHero.Component.jsx
-│   │   │   └── MovieInfo.Component.jsx
-│   │   ├── Navbar/
-│   │   │   ├── MovieNavbar.Component.jsx
-│   │   │   └── Navbar.Component.jsx
-│   │   ├── PaymentModel/
-│   │   │   └── Payment.Component.jsx
-│   │   ├── Poster/
-│   │   │   └── Poster.Component.jsx
-│   │   ├── PosterSlider/
-│   │   │   └── PosterSlider.Component.jsx
-│   │   ├── Reviews/
-│   │   │   └── Reviews.Component.jsx
-│   │   ├── ShowTimes/
-│   │   │   └── ShowTimes.Component.jsx
-│   │   └── Trailers/
-│   │       └── TrailerCard.Component.jsx
-│   ├── config/
-│   │   └── tmdbApi.js
-│   ├── context/
-│   │   └── Movie.context.jsx
-│   ├── index.css
-│   ├── index.js
-│   ├── layout/
-│   │   ├── Default.layout.jsx
-│   │   └── Movie.layout.jsx
-│   ├── pages/
-│   │   ├── 404.jsx
-│   │   ├── Home.jsx
-│   │   ├── Home.Page.jsx
-│   │   ├── Movie.jsx
-│   │   ├── Movie.Page.jsx
-│   │   ├── Order.Page.jsx
-│   │   └── Play.Page.jsx
-│   └── services/
-│       ├── api.config.js
-│       ├── axios.config.js
-│       └── movie.service.js
-├── package.json
-├── package-lock.json
-├── postcss.config.js
-├── webpack.config.js
-└── tailwind.config.js
+CinePix/ <br>
+├── node_modules <br>
+├── public/ <br>
+│   ├── cinepix.png <br>
+│   ├── index.html <br>
+│   └── manifest.json <br>
+├── src/ <br>
+│   ├── App.js <br>
+│   ├── components/ <br>
+│   │   ├── Booking/ <br>
+│   │   │   └── SeatSelection.Component.jsx <br>
+│   │   ├── Cast/ <br>
+│   │   │   └── Cast.Component.jsx <br>
+│   │   ├── Entertainment/ <br>
+│   │   │   └── EntertainmentCard.Component.jsx <br>
+│   │   ├── Footer/ <br>
+│   │   │   └── Footer.Component.jsx <br>
+│   │   ├── HeroCarousel/ <br>
+│   │   │   ├── Arrows.Component.jsx <br>
+│   │   │   └── HeroCarousel.Component.jsx <br>
+│   │   ├── HeroSection/ <br>
+│   │   │   └── Hero.Component.jsx <br>
+│   │   ├── Loader/ <br>
+│   │   │   ├── Loader.css <br>
+│   │   │   └── Loader.jsx <br>
+│   │   ├── MovieHero/ <br>
+│   │   │   ├── MovieHero.Component.jsx <br>
+│   │   │   └── MovieInfo.Component.jsx <br>
+│   │   ├── Navbar/ <br>
+│   │   │   ├── MovieNavbar.Component.jsx <br>
+│   │   │   └── Navbar.Component.jsx <br>
+│   │   ├── PaymentModel/ <br>
+│   │   │   └── Payment.Component.jsx <br>
+│   │   ├── Poster/ <br>
+│   │   │   └── Poster.Component.jsx <br>
+│   │   ├── PosterSlider/ <br>
+│   │   │   └── PosterSlider.Component.jsx <br>
+│   │   ├── Reviews/ <br>
+│   │   │   └── Reviews.Component.jsx <br>
+│   │   ├── ShowTimes/ <br>
+│   │   │   └── ShowTimes.Component.jsx <br>
+│   │   └── Trailers/ <br>
+│   │       └── TrailerCard.Component.jsx <br>
+│   ├── config/ <br>
+│   │   └── tmdbApi.js <br>
+│   ├── context/ <br>
+│   │   └── Movie.context.jsx <br>
+│   ├── index.css <br>
+│   ├── index.js <br>
+│   ├── layout/ <br>
+│   │   ├── Default.layout.jsx <br>
+│   │   └── Movie.layout.jsx <br>
+│   ├── pages/ <br>
+│   │   ├── 404.jsx <br>
+│   │   ├── Home.jsx <br>
+│   │   ├── Home.Page.jsx <br>
+│   │   ├── Movie.jsx <br>
+│   │   ├── Movie.Page.jsx <br>
+│   │   ├── Order.Page.jsx <br>
+│   │   └── Play.Page.jsx <br>
+│   └── services/ <br>
+│       ├── api.config.js <br>
+│       ├── axios.config.js <br>
+│       └── movie.service.js <br>
+├── package.json <br>
+├── package-lock.json <br>
+├── postcss.config.js <br>
+├── webpack.config.js <br>
+└── tailwind.config.js <br>
 
 <h2>Usage:</h2>
 Once the app is running, you can explore the following features: <br>
