@@ -2,6 +2,12 @@
 Your Ultimate Movie Experience <br>
 Welcome to CinePix, your premier destination for all things cinema. <br>CinePix brings you the latest movie releases, seamless ticket booking, <br> exclusive movie premieres, and trailers.  <br>Enjoy browsing movies, reading real user reviews, and watching HD trailers all in one place.
 
+<h2>Why CinePix?</h2>
+The website's vibrant color scheme of red, green, and blue represents the essence of Cinema (Cine) and Pixels (Pix),<br> celebrating both the art of filmmaking and the technological marvel that brings it to life on screen.<br> These colors are a tribute to the magic of cinema and digital imagery.<br>
+
+<h2>Important Note:</h2>
+Due to restrictions on accessing movie data in certain regions,<br> we recommend using a VPN to get the full experience of the CinePix platform.<br> The Movie Database (TMDb) API, which powers many of the movie-related features on the website, <br>may not work properly in India.
+
 <h2>Features:</h2>
 Latest Movie Releases: View the latest Hollywood, Bollywood, and Regional movie releases. <br>
 Instant Ticket Booking: Book your tickets easily with seat selection. <br>
