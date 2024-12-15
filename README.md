@@ -1,5 +1,5 @@
 <h1>CinePix:</h1>
-Your Ultimate Movie Experience
+Your Ultimate Movie Experience <br>
 Welcome to CinePix, your premier destination for all things cinema. <br>CinePix brings you the latest movie releases, seamless ticket booking, <br> exclusive movie premieres, and trailers.  <br>Enjoy browsing movies, reading real user reviews, and watching HD trailers all in one place.
 
 <h2>Features:</h2>
