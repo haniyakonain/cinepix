@@ -55,7 +55,7 @@ const NavLinks = ({ className = "", onClose }) => {
     { name: "Home", path: "home" },
     { name: "Movies", path: "movies" },
     { name: "Showtimes", path: "showtimes" },
-    { name: "Book Tickets", path: "/seat-selection" },
+    { name: "Book Tickets", path: "booking" },
     { name: "Reviews", path: "reviews" },
     { name: "About", path: "about" },
   ];
