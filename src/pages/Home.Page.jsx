@@ -176,7 +176,7 @@ useEffect(() => {
       </div>
 
       {/* Booking Section */}
-      <div id="booking" className="mb-16">
+      <div id="booking" className="container mx-auto px-4 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -185,7 +185,11 @@ useEffect(() => {
         >
           <div className={styles.neonGlow}></div>
           <div className="relative z-10">
-            <h2 className={styles.sectionTitle}>Book Tickets</h2>
+            <div className="flex items-center gap-3 mb-6">
+              <BiStar className="text-4xl text-red-500" />
+              <h2 className={styles.sectionTitle}>Book Tickets
+              </h2>
+            </div>
             <SeatSelection 
               showtime={{ time: "20:00", date: "2024-02-20" }}
               onSeatSelect={(seats) => console.log('Selected seats:', seats)}
