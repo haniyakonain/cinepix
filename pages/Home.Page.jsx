@@ -249,11 +249,11 @@ useEffect(() => {
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                    Instant ticket booking with seat selection
+                    Instant ticket booking with nearby cinemas
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                    Exclusive movie premieres and events
+                    Exclusive movie premieres and trailer's
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-red-500 rounded-full"></span>
