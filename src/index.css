@@ -10,17 +10,7 @@ body {
   min-height: 100vh;
   font-family: 'Roboto', sans-serif; /* Ensure a more readable font */
   color: #ffffff; /* Ensure text is white by default */
-  animation: fadeIn 1s ease-in-out; /* Fade in effect for page load */
-}
-
-/* Keyframes for fade-in effect */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  /* Removed animation */
 }
 
 /* Custom scrollbar styling */
@@ -50,16 +40,7 @@ code {
   margin-top: 0 !important;
   position: relative;
   z-index: 10;
-  animation: slideIn 1.5s ease-in-out; /* Slide-in animation for carousel */
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+  /* Removed animation */
 }
 
 .hero-carousel .slick-slide {
@@ -77,7 +58,7 @@ code {
   justify-content: center;
   align-items: center;
   color: #fff;
-  animation: fadeIn 1.5s ease-in-out; /* Fade in the arrows */
+  /* Removed fadeIn animation */
 }
 
 .hero-carousel .slick-prev {
@@ -118,14 +99,14 @@ code {
 .nav-blur {
   backdrop-filter: blur(10px);
   background-color: rgba(10, 17, 40, 0.95);
-  animation: fadeIn 1s ease-in-out; /* Fade-in effect for navbar */
+  /* Removed fadeIn animation */
 }
 
 /* Movie Showtimes Container */
 .movie-showtimes-container {
   padding: 20px;
   text-align: center;
-  animation: fadeIn 1.5s ease-in-out; /* Fade-in effect for container */
+  /* Removed fadeIn animation */
 }
 
 /* Header Styling */
@@ -133,7 +114,7 @@ header h1 {
   font-size: 2.25rem; /* Increased font size for better visibility */
   color: #fff;
   margin-bottom: 10px;
-  animation: fadeIn 1.5s ease-in-out; /* Fade-in effect for header */
+  /* Removed fadeIn animation */
 }
 
 header p {
@@ -146,7 +127,7 @@ header p {
   @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center;
   margin-top: 20px;
   padding: 0 10px;
-  animation: fadeIn 2s ease-in-out; /* Fade-in effect for movie list */
+  /* Removed fadeIn animation */
 }
 
 /* Movie Card Styling */
@@ -157,37 +138,13 @@ header p {
   align-items: center;
   justify-content: space-between;
   position: relative;
-  opacity: 0;
-  animation: cardFadeIn 1s ease-in-out forwards; /* Fade-in animation for each movie card */
-}
-
-@keyframes cardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  /* Removed fade-in animation */
 }
 
 .movie-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  animation: cardHover 0.3s ease-in-out; /* Hover effect */
-}
-
-@keyframes cardHover {
-  0% {
-    transform: translateY(-5px);
-  }
-  50% {
-    transform: translateY(-2px);
-  }
-  100% {
-    transform: translateY(-5px);
-  }
+  /* Removed hover animation */
 }
 
 /* Movie Poster Styling */
@@ -196,25 +153,14 @@ header p {
   height: auto;
   object-fit: cover;
   border-radius: 8px;
-  animation: fadeIn 1s ease-in-out; /* Image fade-in */
+  /* Removed fadeIn animation */
 }
 
 /* Expanded Movie Card Styling */
 .movie-card.expanded {
   background-color: #1a1a1a;
   border: 2px solid #3498db;
-  animation: scaleIn 0.5s ease-out; /* Scale-in effect when expanded */
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  /* Removed scale-in animation */
 }
 
 .movie-card.expanded .movie-details {
@@ -224,7 +170,7 @@ header p {
   border-radius: 10px;
   background-color: #2a2a2a;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  animation: fadeIn 1.5s ease-in-out; /* Fade-in effect for movie details */
+  /* Removed fade-in animation */
 }
 
 .movie-card.expanded p {
@@ -239,25 +185,14 @@ header p {
   color: #fff;
   margin-top: 10px;
   text-align: center;
-  animation: fadeIn 1s ease-in-out; /* Fade-in effect for title */
+  /* Removed fadeIn animation */
 }
 
 /* Movie Card Button */
 .movie-card button {
   @apply bg-cinepix-600 text-white py-2 px-4 rounded transition-colors duration-300;
   margin-top: 10px;
-  animation: buttonFadeIn 1s ease-in-out; /* Button fade-in effect */
-}
-
-@keyframes buttonFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  /* Removed buttonFadeIn animation */
 }
 
 .movie-card button:hover {
@@ -320,6 +255,7 @@ header p {
     padding: 8px 12px;
   }
 }
+
 .trailer-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

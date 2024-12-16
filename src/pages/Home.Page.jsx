@@ -11,7 +11,6 @@ import PosterSlider from "../components/PosterSlider/PosterSlider.Component";
 import HeroCarousel from "../components/HeroCarousel/HeroCarousel.Component";
 import SeatSelection from "../components/Booking/SeatSelection.Component";
 import Reviews from "../components/Reviews/Reviews.Component";
-import TrailerCard from "../components/Trailers/TrailerCard.Component";
 
 // Add this import
 import tmdbApi from '../services/api.config';
@@ -164,10 +163,10 @@ useEffect(() => {
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-6">
               <BiTime className="text-4xl text-red-500" />
-              <h2 className={styles.sectionTitle}>Latest Showtimes</h2>
+              <h2 className={styles.sectionTitle}>Latest Showtimes and Trailers</h2>
             </div>
             <p className="text-gray-300 mb-8">
-              Real-time theatre showtimes and instant booking options
+              Real-time theatre showtimes and its trailer's
             </p>
             <div className="min-h-[500px]">
               <ShowTimes />
@@ -191,34 +190,6 @@ useEffect(() => {
               showtime={{ time: "20:00", date: "2024-02-20" }}
               onSeatSelect={(seats) => console.log('Selected seats:', seats)}
             />
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Trailers Section */}
-      <div id="trailers" className="container mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className={`${styles.neonSection} p-8 mb-16`}
-        >
-          <div className={styles.neonGlow}></div>
-          <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-6">
-              <BiMovie className="text-3xl text-red-500" />
-              <h2 className={styles.sectionTitle}>Latest Trailers</h2>
-            </div>
-            <p className="text-gray-300 mb-8">
-              Watch the latest movie trailers and upcoming releases
-            </p>
-
-            {/* Display Unique Trailers */}
-            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
-              {trailerMovies.map((movie) => (
-                <TrailerCard key={movie.id} movie={movie} />
-              ))}
-            </div>
           </div>
         </motion.div>
       </div>
