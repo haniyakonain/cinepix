@@ -75,8 +75,6 @@ CinePix/ <br>
 │   │   │   └── Reviews.Component.jsx <br>
 │   │   ├── ShowTimes/ <br>
 │   │   │   └── ShowTimes.Component.jsx <br>
-│   │   └── Trailers/ <br>
-│   │       └── TrailerCard.Component.jsx <br>
 │   ├── config/ <br>
 │   │   └── tmdbApi.js <br>
 │   ├── context/ <br>
@@ -108,10 +106,10 @@ CinePix/ <br>
 Once the app is running, you can explore the following features: <br>
 Home Page: View featured movies and their details. <br>
 Movie Page: Detailed information about a specific movie, including cast, trailers, reviews, and showtimes. <br>
-Ticket Booking: Select seats and book tickets for your desired showtime. <br>
+Showtimes: Real-time theatre showtimes and its trailer's. <br>
+Book Tickets: Latest Movies in Theaters<br>
 Reviews: Read and write reviews for movies. <br>
-Trailers: Watch trailers for upcoming movies. <br>
-Payment: Complete your booking with a payment modal. <br>
+
 
 <h2>Technologies Used:</h2>
 React: JavaScript library for building user interfaces. <br>
