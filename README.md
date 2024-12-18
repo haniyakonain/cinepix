@@ -34,6 +34,7 @@ Your app should now be running on http://localhost:3000. <br>
 
 <h2>Project Structure</h2>
 Here's an overview of the project's file structure: <br>
+```bash
 CinePix/ <br>
 ├── node_modules <br>
 ├── public/ <br>
@@ -101,6 +102,7 @@ CinePix/ <br>
 ├── postcss.config.js <br>
 ├── webpack.config.js <br>
 └── tailwind.config.js <br>
+```
 
 <h2>Usage:</h2>
 Once the app is running, you can explore the following features: <br>
