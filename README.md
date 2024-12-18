@@ -32,9 +32,8 @@ REACT_APP_TMDB_TOKEN=your_tmdb_api_key <br>
 npm start <br>
 Your app should now be running on http://localhost:3000. <br>
 
-<h2>Project Structure</h2>
-Here's an overview of the project's file structure: <br>
-```bash
+## Project Structure
+```
 CinePix/
 ├── node_modules 
 ├── public/ 
@@ -101,7 +100,7 @@ CinePix/
 ├── package-lock.json 
 ├── postcss.config.js 
 ├── webpack.config.js 
-└── tailwind.config.js 
+└── tailwind.config.js
 ```
 
 <h2>Usage:</h2>
