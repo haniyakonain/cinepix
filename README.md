@@ -100,4 +100,7 @@ Once the app is running, you can explore the following features:
 - **Axios**: Promise-based HTTP client for making requests to APIs.
 - **TMDb API**: External API for fetching movie data, including movie information, showtimes, trailers, and reviews.
 
+---
+
+Made with ❤️ by **Haniya Konain and team**.
 
