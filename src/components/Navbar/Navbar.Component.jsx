@@ -1,10 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { BiMenu, BiSearch, BiX, BiLoader } from "react-icons/bi";
 import { searchMovies } from "../../services/api.config";
 
-const MobileMenu = ({ isOpen, onClose }) => (
+const SECTION_LINKS = [
+  { name: "Home", path: "home" },
+  { name: "Movies", path: "movies" },
+  { name: "Showtimes", path: "showtimes" },
+  { name: "Book Tickets", path: "booking" },
+  { name: "Reviews", path: "reviews" },
+  { name: "About", path: "about" },
+];
+const SECTION_IDS = SECTION_LINKS.map((link) => link.path);
+
+// Tracks which section is currently in view (home page only) so the nav
+// can highlight it without relying on a hash that scrolling never sets.
+const useActiveSection = () => {
+  const location = useLocation();
+  const [active, setActive] = useState(SECTION_IDS[0]);
+
+  useEffect(() => {
+    if (location.pathname !== "/") return undefined;
+
+    const elements = SECTION_IDS.map((id) => document.getElementById(id)).filter(Boolean);
+    if (elements.length === 0) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) setActive(visible.target.id);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
+  return active;
+};
+
+const MobileMenu = ({ isOpen, onClose, activeSection }) => (
   <AnimatePresence>
     {isOpen && (
       <motion.div
@@ -38,9 +75,9 @@ const MobileMenu = ({ isOpen, onClose }) => (
             transition={{ delay: 0.1 }}
             className="flex flex-col gap-6"
           >
-            <SearchBar className="w-full" />
+            <SearchBar className="w-full" onNavigate={onClose} />
             <div className="flex flex-col gap-4">
-              <NavLinks className="flex-col" onClose={onClose} />
+              <NavLinks className="flex-col" onClose={onClose} activeSection={activeSection} />
             </div>
           </motion.div>
         </div>
@@ -49,19 +86,20 @@ const MobileMenu = ({ isOpen, onClose }) => (
   </AnimatePresence>
 );
 
-const NavLinks = ({ className = "", onClose }) => {
+const NavLinks = ({ className = "", onClose, activeSection }) => {
   const location = useLocation();
-  const links = [
-    { name: "Home", path: "home" },
-    { name: "Movies", path: "movies" },
-    { name: "Showtimes", path: "showtimes" },
-    { name: "Book Tickets", path: "booking" },
-    { name: "Reviews", path: "reviews" },
-    { name: "About", path: "about" },
-  ];
+  const navigate = useNavigate();
 
   const scrollToSection = (sectionId) => {
-    // Ensure the section exists before attempting to scroll
+    // Links live on every page, but the sections only exist on the home
+    // page — navigate there first (carrying the target as a hash) instead
+    // of silently doing nothing.
+    if (location.pathname !== "/") {
+      navigate(`/#${sectionId}`);
+      if (onClose) onClose();
+      return;
+    }
+
     const element = document.getElementById(sectionId);
     if (!element) {
       console.warn(`No element found with ID: ${sectionId}`);
@@ -86,16 +124,13 @@ const NavLinks = ({ className = "", onClose }) => {
   };
 
   return (
-    <div className={`flex gap-6 ${className}`}>
-      {links.map((link) => (
+    <div className={`flex flex-wrap gap-x-6 gap-y-2 ${className}`}>
+      {SECTION_LINKS.map((link) => (
         <motion.div key={link.name} whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }}>
           <button
-            onClick={() => {
-              // Ensure smooth scrolling works even if hash is not exactly matching
-              scrollToSection(link.path);
-            }}
+            onClick={() => scrollToSection(link.path)}
             className={`text-base font-medium transition-all duration-300 ${
-              location.hash === `#${link.path}` || window.location.hash === `#${link.path}`
+              activeSection === link.path
                 ? "text-red-500 font-bold"
                 : "text-blue-400 hover:text-red-400"
             }`}
@@ -109,7 +144,8 @@ const NavLinks = ({ className = "", onClose }) => {
 };
 
 // Rest of the code remains the same as in the original file (SearchBar and Navbar components)
-const SearchBar = ({ className = "" }) => {
+const SearchBar = ({ className = "", onNavigate }) => {
+  const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -160,7 +196,7 @@ const SearchBar = ({ className = "" }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-          className="w-full bg-transparent border-none focus:outline-none text-blue-300 placeholder-gray-400"
+          className="w-full min-w-0 bg-transparent border-none focus:outline-none text-blue-300 placeholder-gray-400"
           placeholder="Search for movies..."
         />
         {isLoading && <BiLoader className="animate-spin text-red-500" size={20} />}
@@ -182,6 +218,8 @@ const SearchBar = ({ className = "" }) => {
                 onClick={() => {
                   setSearchQuery("");
                   setSearchResults([]);
+                  navigate(`/movie/${movie.id}`);
+                  if (onNavigate) onNavigate();
                 }}
               >
                 <div className="flex items-center gap-3">
@@ -189,11 +227,11 @@ const SearchBar = ({ className = "" }) => {
                     <img
                       src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
                       alt={movie.title}
-                      className="w-12 h-18 object-cover rounded"
+                      className="w-12 h-[72px] flex-shrink-0 object-cover rounded"
                     />
                   )}
-                  <div>
-                    <h4 className="text-blue-600 font-medium">{movie.title}</h4>
+                  <div className="min-w-0">
+                    <h4 className="text-blue-600 font-medium truncate">{movie.title}</h4>
                     <p className="text-sm text-gray-400">{movie.release_date?.split("-")[0]}</p>
                   </div>
                 </div>
@@ -209,15 +247,53 @@ const SearchBar = ({ className = "" }) => {
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const activeSection = useActiveSection();
 
+  // rAF-throttled + passive so this doesn't run a state update on every
+  // single scroll event while the page is being dragged/flung.
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 20);
+        ticking = false;
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Links carry their target as a hash (e.g. /#reviews) when clicked from a
+  // page other than home; once we land back on home, scroll to it. Retried
+  // across a few frames since the section elements mount synchronously but
+  // layout can still be settling right after navigation.
+  useEffect(() => {
+    if (location.pathname !== "/" || !location.hash) return undefined;
+
+    const id = location.hash.slice(1);
+    let attempts = 0;
+    let frameId;
+
+    const tryScroll = () => {
+      const element = document.getElementById(id);
+      if (element) {
+        const navbar = document.querySelector(".navbar");
+        const navbarHeight = navbar ? navbar.offsetHeight : 80;
+        const top = element.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+        window.scrollTo({ top, behavior: "smooth" });
+      } else if (attempts < 20) {
+        attempts += 1;
+        frameId = window.requestAnimationFrame(tryScroll);
+      }
+    };
+
+    tryScroll();
+    return () => frameId && window.cancelAnimationFrame(frameId);
+  }, [location.pathname, location.hash]);
 
   return (
     <motion.nav
@@ -227,8 +303,8 @@ const Navbar = () => {
         isScrolled ? "bg-navy-900/80 backdrop-blur" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center gap-4">
+        <Link to="/" className="flex-shrink-0">
           <motion.img
             whileHover={{ scale: 1.05 }}
             src="/cinepix.png"
@@ -236,19 +312,27 @@ const Navbar = () => {
             className="h-12"
           />
         </Link>
-        <div className="hidden lg:flex items-center gap-6">
-          <NavLinks />
+        <div className="hidden lg:flex items-center gap-6 min-w-0">
+          <NavLinks activeSection={activeSection} />
+        </div>
+        <div className="hidden lg:block w-full max-w-xs min-w-0">
+          <SearchBar />
         </div>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="lg:hidden text-blue-400 hover:text-red-400 transition-all duration-300"
         >
           {isMenuOpen ? <BiX size={28} /> : <BiMenu size={28} />}
         </motion.button>
       </div>
-      <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <MobileMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        activeSection={activeSection}
+      />
     </motion.nav>
   );
 };

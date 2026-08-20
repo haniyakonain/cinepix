@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
 import { BiTime, BiMovie, BiStar } from "react-icons/bi";
 
@@ -27,9 +26,6 @@ const styles = {
 
 const HomePage = () => {
   const [recommendedMovies, setrecommendedMovies] = useState([]);
-  const [premierMovies, setpremierMovies] = useState([]);
-  const [nowShowingMovies, setNowShowingMovies] = useState([]);
-  const [trailerMovies, setTrailerMovies] = useState([]);
 
   useEffect(() => {
     const requestTopRatedMovies = async () => {
@@ -41,83 +37,6 @@ const HomePage = () => {
       }
     };
     requestTopRatedMovies();
-  }, []);
-
-  useEffect(() => {
-    const requestPopularMovies = async () => {
-      try {
-        const response = await tmdbApi.get("/movie/popular");
-        setpremierMovies(response.data.results);
-      } catch (error) {
-        console.error("Error fetching popular movies:", error);
-      }
-    };
-    requestPopularMovies();
-  }, []);
-
-  useEffect(() => {
-    const fetchNowPlaying = async () => {
-      try {
-        const response = await tmdbApi.get("/movie/now_playing", {
-          params: {
-            region: 'IN',
-            language: 'en-US'
-          }
-        });
-        setNowShowingMovies(response.data.results);
-      } catch (error) {
-        console.error("Error fetching now playing movies:", error);
-      }
-    };
-    fetchNowPlaying();
-  }, []);
-
-useEffect(() => {
-    const fetchTrailers = async () => {
-      try {
-        const response = await tmdbApi.get("/movie/upcoming", {
-          params: {
-            language: 'en-US',
-            region: 'US'
-          }
-        });
-        
-        // Log response data to check for duplicates or issues
-        console.log(response.data.results);
-
-        // Transform API data to match your existing trailer card structure
-        const transformedTrailers = response.data.results.slice(0, 12).map(movie => ({
-          id: movie.id,
-          title: movie.title,
-          release_date: new Date(movie.release_date).toLocaleDateString('en-US', { 
-            month: 'long', 
-            day: 'numeric', 
-            year: 'numeric' 
-          }),
-          poster_path: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
-          trailerUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(movie.title + ' trailer')}`,
-          description: movie.overview
-        }));
-
-        // Log transformed trailers to ensure proper data
-        console.log(transformedTrailers);
-
-        // Filter duplicates based on movie ID
-        const uniqueTrailers = Array.from(
-          new Map(
-            transformedTrailers.map((movie) => [movie.id, movie]) // Map movie ID to the movie object
-          ).values()
-        );
-
-        setTrailerMovies(uniqueTrailers);
-      } catch (error) {
-        console.error("Error fetching upcoming movies for trailers:", error);
-        // Fallback to static data if needed
-        setTrailerMovies([]);
-      }
-    };
-
-    fetchTrailers();
   }, []);
 
   return (
@@ -133,7 +52,7 @@ useEffect(() => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className={`${styles.neonSection} p-8 mb-16`}
+          className={`${styles.neonSection} p-4 sm:p-6 md:p-8 mb-16`}
         >
           <div className={styles.neonGlow}></div>
           <div className="relative z-10">
@@ -157,7 +76,7 @@ useEffect(() => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className={`${styles.neonSection} p-8 mb-16`}
+          className={`${styles.neonSection} p-4 sm:p-6 md:p-8 mb-16`}
         >
           <div className={styles.neonGlow}></div>
           <div className="relative z-10">
@@ -181,7 +100,7 @@ useEffect(() => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className={`${styles.neonSection} p-8`}
+          className={`${styles.neonSection} p-4 sm:p-6 md:p-8`}
         >
           <div className={styles.neonGlow}></div>
           <div className="relative z-10">
@@ -204,7 +123,7 @@ useEffect(() => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className={`${styles.neonSection} p-8`}
+          className={`${styles.neonSection} p-4 sm:p-6 md:p-8`}
         >
           <div className={styles.neonGlow}></div>
           <div className="relative z-10">
@@ -226,7 +145,7 @@ useEffect(() => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className={`${styles.neonSection} p-8 mb-16`}
+          className={`${styles.neonSection} p-4 sm:p-6 md:p-8 mb-16`}
         >
           <div className={styles.neonGlow}></div>
           <div className="relative z-10">
@@ -266,7 +185,7 @@ useEffect(() => {
                 <h3 className="text-xl font-semibold text-white mb-4">
                   Our Features
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     className="p-4 bg-navy-800/50 rounded-lg"

@@ -111,7 +111,7 @@ const TrailerCard = () => {
       <p className="text-gray-400 mb-8">Watch the latest movie trailers and upcoming releases</p>
 
       {/* Movie Cards */}
-      <div className="grid grid-cols-3 grid-rows-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentMovies.map((movie) => (
           <motion.div
             key={movie.id}

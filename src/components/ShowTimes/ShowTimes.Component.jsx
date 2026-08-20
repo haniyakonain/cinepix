@@ -74,8 +74,8 @@ const MovieShowtimes = () => {
                 }
                 
                 .movie-card {
-                    width: 300px;
-                    max-width: 350px;
+                    width: 100%;
+                    max-width: 320px;
                     border: 1px solid #ddd;
                     border-radius: 12px;
                     overflow: hidden;

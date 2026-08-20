@@ -115,7 +115,7 @@ const MoviePage = () => {
       ) : (
         <>
           <MovieHero movie={movieData.movie} />
-          <div className="my-12 container px-4 lg:ml-20 lg:w-2/1">
+          <div className="my-12 container mx-auto px-4">
             <div className="flex flex-col items-start gap-3">
               <h1 className="text-white-800 font-bold text-2xl">About the movie</h1>
               <p>{movieData.movie.overview}</p>

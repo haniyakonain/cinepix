@@ -129,41 +129,41 @@ const Reviews = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ scale: 1.02 }}
-            className="bg-navy-800/50 rounded-lg p-6 backdrop-blur-sm flex"
+            className="bg-navy-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-sm flex overflow-hidden"
           >
             <img
               src={review.moviePoster}
               alt={review.movie}
-              className="w-24 h-36 rounded-lg object-cover mr-4 hidden md:block"
+              className="w-20 h-28 lg:w-24 lg:h-36 flex-shrink-0 rounded-lg object-cover mr-4 hidden lg:block"
               onError={(e) => {
                 e.target.style.display = 'none';
               }}
             />
-            <div className="flex-1">
-              <div className="flex items-start gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start gap-3 sm:gap-4">
                 <img
                   src={review.user.avatar}
                   alt={review.user.name}
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 rounded-full object-cover"
                   onError={(e) => {
                     e.target.src = `https://ui-avatars.com/api/?name=${review.user.name}`;
                   }}
                 />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-white">{review.user.name}</h3>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="font-semibold text-white truncate max-w-full">{review.user.name}</h3>
                     {review.user.verified && (
-                      <span className="bg-blue-500/20 text-blue-500 text-xs px-2 py-1 rounded-full">
+                      <span className="bg-blue-500/20 text-blue-500 text-xs px-2 py-1 rounded-full whitespace-nowrap">
                         Verified
                       </span>
                     )}
                   </div>
-                  <h4 className="text-red-500 text-sm mt-1">
+                  <h4 className="text-red-500 text-sm mt-1 truncate">
                     Review for: {review.movie}
                   </h4>
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex flex-wrap items-center gap-2 mt-1">
                     <StarRating rating={review.rating * 2} />
-                    <span className="text-sm text-gray-400">
+                    <span className="text-sm text-gray-400 whitespace-nowrap">
                       {new Date(review.date).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
@@ -171,7 +171,7 @@ const Reviews = () => {
                       })}
                     </span>
                   </div>
-                  <p className="mt-3 text-gray-300 leading-relaxed line-clamp-3">
+                  <p className="mt-3 text-gray-300 leading-relaxed line-clamp-3 break-words">
                     {review.comment}
                   </p>
                 </div>
