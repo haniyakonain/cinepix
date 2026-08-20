@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BiPlay, BiExpand, BiChevronLeft, BiChevronRight } from 'react-icons/bi';
-import axios from 'axios';
 
 const SeatSelection = () => {
   const [movies, setMovies] = useState([]);
