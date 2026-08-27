@@ -152,6 +152,15 @@ const MoviePage = () => {
 
   const settingsCast = {
     ...settings,
+    // Infinite looping needs comfortably more real slides than slidesToShow
+    // to clone from cleanly; with a short cast list it produces duplicated,
+    // gapped cards instead. Not worth the risk for a cast list.
+    infinite: false,
+    // A cast list is something people read, not a slideshow — autoplay was
+    // yanking it out from under you every 2s, and slick's slow (2000ms)
+    // transition speed made each auto-advance a visible smear.
+    autoplay: false,
+    speed: 400,
     slidesToShow: 4,
     slidesToScroll: 1,
   };

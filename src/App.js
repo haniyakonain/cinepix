@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import HomePage from "./pages/Home.Page";
 import MoviePage from "./pages/Movie.Page";
 import PlayPage from "./pages/Play.Page";
+import NotFoundPage from "./pages/404";
 import { SearchProvider } from "./context/Search.context";
 
 axios.defaults.baseURL = "https://api.themoviedb.org/3";
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/movie/:id" element={<MoviePage />} />
         <Route path="/plays" element={<PlayPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </SearchProvider>
   );

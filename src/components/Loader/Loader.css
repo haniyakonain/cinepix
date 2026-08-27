@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #2c3e50;
+    background-color: #0f0f1a;
 }
 
 .sk-chase {
@@ -27,7 +27,7 @@
     display: block;
     width: 25%;
     height: 25%;
-    background-color: #fff;
+    background-color: #ef4444;
     border-radius: 100%;
     animation: sk-chase-dot-before 2.0s infinite ease-in-out both;
 }

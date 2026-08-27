@@ -84,8 +84,20 @@ const HeroCarousel = () => {
 		</div>
 	);
 
-	if (loading) return <div>Loading...</div>;
-	if (error) return <div>Error: {error}</div>;
+	if (loading) {
+		return (
+			<div className="mt-24 h-56 md:h-80 lg:h-96 flex items-center justify-center text-gray-400">
+				<div className="animate-spin rounded-full h-10 w-10 border-t-2 border-red-500"></div>
+			</div>
+		);
+	}
+	if (error) {
+		return (
+			<div className="mt-24 h-56 md:h-80 lg:h-96 flex items-center justify-center text-gray-400 text-center px-4">
+				Couldn't load featured movies right now.
+			</div>
+		);
+	}
 
 	return (
 		<div className='mt-24'>
