@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import axios from "axios";
 import { BiX, BiStar } from "react-icons/bi";
@@ -128,63 +129,66 @@ const MovieShowtimes = () => {
                 </div>
             )}
 
-            <AnimatePresence>
-                {expandedData && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4"
-                        onClick={() => setExpandedMovie(null)}
-                    >
+            {createPortal(
+                <AnimatePresence>
+                    {expandedData && (
                         <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 40 }}
-                            onClick={(e) => e.stopPropagation()}
-                            className="relative w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-navy-900 rounded-t-2xl sm:rounded-2xl border border-red-500/20 p-4 sm:p-6"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4"
+                            onClick={() => setExpandedMovie(null)}
                         >
-                            <button
-                                onClick={() => setExpandedMovie(null)}
-                                aria-label="Close movie details"
-                                className="absolute top-3 right-3 text-gray-300 hover:text-red-400 transition-colors"
+                            <motion.div
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 40 }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="relative w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-navy-900 rounded-t-2xl sm:rounded-2xl border border-red-500/20 p-4 sm:p-6"
                             >
-                                <BiX size={26} />
-                            </button>
+                                <button
+                                    onClick={() => setExpandedMovie(null)}
+                                    aria-label="Close movie details"
+                                    className="absolute top-3 right-3 text-gray-300 hover:text-red-400 transition-colors"
+                                >
+                                    <BiX size={26} />
+                                </button>
 
-                            <h3 className="text-xl sm:text-2xl font-bold text-white pr-8">{expandedData.title}</h3>
-                            <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-gray-300">
-                                <span className="flex items-center gap-1 text-yellow-500">
-                                    <BiStar /> {expandedData.vote_average ? expandedData.vote_average.toFixed(1) : "N/A"}
-                                </span>
-                                <span>{expandedData.release_date || "Release date N/A"}</span>
-                            </div>
-                            <p className="text-gray-300 mt-4 leading-relaxed">
-                                {expandedData.overview || "No overview available."}
-                            </p>
+                                <h3 className="text-xl sm:text-2xl font-bold text-white pr-8">{expandedData.title}</h3>
+                                <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-gray-300">
+                                    <span className="flex items-center gap-1 text-yellow-500">
+                                        <BiStar /> {expandedData.vote_average ? expandedData.vote_average.toFixed(1) : "N/A"}
+                                    </span>
+                                    <span>{expandedData.release_date || "Release date N/A"}</span>
+                                </div>
+                                <p className="text-gray-300 mt-4 leading-relaxed">
+                                    {expandedData.overview || "No overview available."}
+                                </p>
 
-                            <div className="mt-4">
-                                {movieTrailers[expandedData.id] ? (
-                                    <div className="aspect-video w-full">
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            src={movieTrailers[expandedData.id]}
-                                            title={`${expandedData.title} Trailer`}
-                                            frameBorder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                            className="rounded-lg"
-                                        ></iframe>
-                                    </div>
-                                ) : (
-                                    <p className="text-gray-400 text-sm">No trailer available</p>
-                                )}
-                            </div>
+                                <div className="mt-4">
+                                    {movieTrailers[expandedData.id] ? (
+                                        <div className="aspect-video w-full">
+                                            <iframe
+                                                width="100%"
+                                                height="100%"
+                                                src={movieTrailers[expandedData.id]}
+                                                title={`${expandedData.title} Trailer`}
+                                                frameBorder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                                className="rounded-lg"
+                                            ></iframe>
+                                        </div>
+                                    ) : (
+                                        <p className="text-gray-400 text-sm">No trailer available</p>
+                                    )}
+                                </div>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
         </div>
     );
 };

@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Slider from "react-slick";
 import { FaCcVisa, FaCcApplePay } from "react-icons/fa";
+import { BiCalendar, BiTime, BiCategory, BiGlobe, BiBuilding, BiDollarCircle, BiStar } from "react-icons/bi";
 import PosterSlider from "../components/PosterSlider/PosterSlider.Component";
 import MovieHero from "../components/MovieHero/MovieHero.Component";
 import Cast from "../components/Cast/Cast.Component";
@@ -12,6 +13,38 @@ import Loader from "../components/Loader/Loader";
 import Footer from "../components/Footer/Footer.Component";
 
 const VIDEO_TYPE_PRIORITY = ["Trailer", "Teaser", "Clip", "Featurette"];
+
+const formatMoney = (value) => {
+  if (!value) return null;
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value);
+};
+
+const languageName = (code) => {
+  if (!code) return null;
+  try {
+    return new Intl.DisplayNames(["en"], { type: "language" }).of(code);
+  } catch {
+    return code.toUpperCase();
+  }
+};
+
+const DetailItem = ({ icon: Icon, label, value }) => {
+  if (!value) return null;
+  return (
+    <div className="flex items-start gap-2">
+      <Icon className="text-red-500 mt-0.5 flex-shrink-0" size={18} />
+      <div className="min-w-0">
+        <p className="text-xs text-gray-400 uppercase tracking-wide">{label}</p>
+        <p className="text-sm text-white break-words">{value}</p>
+      </div>
+    </div>
+  );
+};
 
 const MoviePage = () => {
   const { id } = useParams();
@@ -120,6 +153,25 @@ const MoviePage = () => {
     slidesToScroll: 1,
   };
 
+  const movie = movieData.movie;
+  const genresText = movie.genres?.map((g) => g.name).join(", ");
+  const releaseDateText = movie.release_date
+    ? new Date(movie.release_date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null;
+  const ratingText = movie.vote_average
+    ? `${movie.vote_average.toFixed(1)}/10${
+        movie.vote_count ? ` (${movie.vote_count.toLocaleString()} votes)` : ""
+      }`
+    : null;
+  const studiosText = movie.production_companies
+    ?.map((c) => c.name)
+    .filter(Boolean)
+    .join(", ");
+
   return (
     <>
       {isLoading ? (
@@ -128,9 +180,23 @@ const MoviePage = () => {
         <>
           <MovieHero movie={movieData.movie} />
           <div className="my-12 container mx-auto px-4">
-            <div className="flex flex-col items-start gap-3">
+            <div className="flex flex-col items-start gap-4">
               <h1 className="text-white-800 font-bold text-2xl">About the movie</h1>
-              <p>{movieData.movie.overview}</p>
+              {movie.tagline && (
+                <p className="text-gray-400 italic">"{movie.tagline}"</p>
+              )}
+              <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 mt-2 w-full">
+                <DetailItem icon={BiCalendar} label="Release Date" value={releaseDateText} />
+                <DetailItem icon={BiTime} label="Runtime" value={movie.runtime ? `${movie.runtime} min` : null} />
+                <DetailItem icon={BiCategory} label="Genres" value={genresText} />
+                <DetailItem icon={BiGlobe} label="Language" value={languageName(movie.original_language)} />
+                <DetailItem icon={BiStar} label="Rating" value={ratingText} />
+                <DetailItem icon={BiBuilding} label="Studio" value={studiosText} />
+                <DetailItem icon={BiDollarCircle} label="Budget" value={formatMoney(movie.budget)} />
+                <DetailItem icon={BiDollarCircle} label="Box Office" value={formatMoney(movie.revenue)} />
+              </div>
             </div>
 
             <div className="my-8">

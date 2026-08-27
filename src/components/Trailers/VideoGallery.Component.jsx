@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { BiPlay, BiX } from "react-icons/bi";
 
@@ -45,46 +46,49 @@ const VideoGallery = ({ videos = [], movieTitle }) => {
         ))}
       </div>
 
-      <AnimatePresence>
-        {activeVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-            onClick={() => setActiveVideo(null)}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {activeVideo && (
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 30 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl bg-navy-900 rounded-xl border border-red-500/20 p-3 sm:p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+              onClick={() => setActiveVideo(null)}
             >
-              <button
-                onClick={() => setActiveVideo(null)}
-                aria-label="Close video"
-                className="absolute -top-3 -right-3 sm:top-2 sm:right-2 bg-navy-800 text-gray-200 hover:text-red-400 rounded-full p-1.5 transition-colors"
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-3xl bg-navy-900 rounded-xl border border-red-500/20 p-3 sm:p-4"
               >
-                <BiX size={22} />
-              </button>
-              <div className="aspect-video w-full">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={`https://www.youtube.com/embed/${activeVideo.key}?autoplay=1`}
-                  title={`${movieTitle} - ${activeVideo.name}`}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="rounded-lg"
-                ></iframe>
-              </div>
-              <p className="text-white text-sm sm:text-base mt-3 font-medium truncate">{activeVideo.name}</p>
+                <button
+                  onClick={() => setActiveVideo(null)}
+                  aria-label="Close video"
+                  className="absolute -top-3 -right-3 sm:top-2 sm:right-2 bg-navy-800 text-gray-200 hover:text-red-400 rounded-full p-1.5 transition-colors"
+                >
+                  <BiX size={22} />
+                </button>
+                <div className="aspect-video w-full">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${activeVideo.key}?autoplay=1`}
+                    title={`${movieTitle} - ${activeVideo.name}`}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="rounded-lg"
+                  ></iframe>
+                </div>
+                <p className="text-white text-sm sm:text-base mt-3 font-medium truncate">{activeVideo.name}</p>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 };

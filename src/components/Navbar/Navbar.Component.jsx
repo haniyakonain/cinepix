@@ -157,8 +157,8 @@ const SearchBar = ({ className = "", onNavigate }) => {
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.02 }}
-        className={`flex items-center gap-3 bg-navy-900/50 px-3 py-2 rounded-md shadow-lg backdrop-blur-sm transition-all duration-300 ${className} ${
-          isFocused ? "ring-2 ring-red-500 bg-navy-800/60" : ""
+        className={`flex items-center gap-3 bg-white/10 border border-white/15 px-3 py-2.5 rounded-xl shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300 ${className} ${
+          isFocused ? "ring-2 ring-red-500 bg-white/15 border-white/25" : ""
         }`}
       >
         <BiSearch className={isFocused ? "text-red-500" : "text-gray-400"} />
