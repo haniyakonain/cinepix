@@ -35,54 +35,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* Slick carousel styling */
-.hero-carousel {
-  margin-top: 0 !important;
-  position: relative;
-  z-index: 10;
-  /* Removed animation */
-}
-
-.hero-carousel .slick-slide {
-  padding: 0;
-}
-
-.hero-carousel .slick-prev,
-.hero-carousel .slick-next {
-  z-index: 15; /* Ensure arrows are above content */
-  width: 40px;
-  height: 40px;
-  background-color: rgba(0, 0, 0, 0.5); /* Add background for visibility */
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  /* Removed fadeIn animation */
-}
-
-.hero-carousel .slick-prev {
-  left: 20px;
-}
-
-.hero-carousel .slick-next {
-  right: 20px;
-}
-
-.hero-carousel .slick-prev:before,
-.hero-carousel .slick-next:before {
-  font-size: 20px;
-  color: #ef4444 !important;
-}
-
-.hero-carousel .slick-dots {
-  bottom: 20px;
-}
-
-.hero-carousel .slick-dots li button:before {
-  color: white;
-}
-
+/* Slick carousel gutter (all sliders now use custom SliderArrows instead of
+   slick's default arrows/dots, which get clipped by overflow-hidden
+   ancestors and render as unstyled black dots). */
 .slick-slide > div {
   margin: 0 10px;
 }

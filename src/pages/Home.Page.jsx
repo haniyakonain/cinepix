@@ -8,7 +8,7 @@ import DefaultlayoutHoc from "../layout/Default.layout";
 // Components
 import PosterSlider from "../components/PosterSlider/PosterSlider.Component";
 import HeroCarousel from "../components/HeroCarousel/HeroCarousel.Component";
-import SearchResultHero from "../components/HeroCarousel/SearchResultHero.Component";
+import SearchResultsGrid from "../components/HeroCarousel/SearchResultsGrid.Component";
 import SeatSelection from "../components/Booking/SeatSelection.Component";
 import Reviews from "../components/Reviews/Reviews.Component";
 
@@ -31,7 +31,7 @@ const styles = {
 
 const HomePage = () => {
   const [recommendedMovies, setrecommendedMovies] = useState([]);
-  const { query, topResult, isSearching } = useSearch();
+  const { query, results: searchResults, isSearching } = useSearch();
 
   const requestTopRatedMovies = useCallback(async () => {
     try {
@@ -54,8 +54,8 @@ const HomePage = () => {
       {/* Hero Section */}
       <div id="home" className="relative w-full">
         {query.trim() ? (
-          <div className="mt-24 px-2 sm:px-4">
-            <SearchResultHero query={query} topResult={topResult} isSearching={isSearching} />
+          <div className="mt-24 px-4 sm:px-6 pb-8">
+            <SearchResultsGrid query={query} results={searchResults} isSearching={isSearching} />
           </div>
         ) : (
           <HeroCarousel />

@@ -48,7 +48,8 @@ const MoviePage = () => {
 
         const videos = videosResponse.data.results
           .filter((video) => video.site === "YouTube" && VIDEO_TYPE_PRIORITY.includes(video.type))
-          .sort((a, b) => VIDEO_TYPE_PRIORITY.indexOf(a.type) - VIDEO_TYPE_PRIORITY.indexOf(b.type));
+          .sort((a, b) => VIDEO_TYPE_PRIORITY.indexOf(a.type) - VIDEO_TYPE_PRIORITY.indexOf(b.type))
+          .slice(0, 5);
 
         // Save the fetched data into the state
         setMovieData({

@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useRef } from "react";
 import Slider from "react-slick";
 import Poster from "../Poster/Poster.Component";
+import SliderArrows from "../SliderArrows/SliderArrows.Component";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const PosterSlider = ({ 
-  posters = [], 
-  title = "", 
-  subtitle = "", 
-  isDark = false 
+const PosterSlider = ({
+  posters = [],
+  title = "",
+  subtitle = "",
+  isDark = false
 }) => {
-  // Default settings with corrected 'infinite' spelling
+  const sliderRef = useRef(null);
+
+  // Default settings with corrected 'infinite' spelling. Arrows/dots are
+  // handled by our own SliderArrows instead of slick's defaults, which get
+  // clipped by any ancestor with overflow-hidden and render as bare black dots.
   const settings = {
     infinite: false,
     autoplay: false,
     speed: 500,
+    arrows: false,
+    dots: false,
     slidesToShow: 5,
     slidesToScroll: 4,
     initialSlide: 0,
@@ -25,7 +32,6 @@ const PosterSlider = ({
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true,
         },
       },
       {
@@ -54,7 +60,7 @@ const PosterSlider = ({
   return (
     <div className="poster-slider-container">
       <div className="flex flex-col items-start sm:ml-3 my-2">
-        <h3 
+        <h3
           className={`text-2xl font-bold ${
             isDark ? "text-white" : "text-black"
           }`}
@@ -65,15 +71,18 @@ const PosterSlider = ({
           {subtitle}
         </p>
       </div>
-      <Slider {...settings}>
-        {posters.map((each, index) => (
-          <Poster 
-            key={each.id || index} 
-            {...each} 
-            isDark={isDark} 
-          />
-        ))}
-      </Slider>
+      <div className="relative group">
+        <Slider ref={sliderRef} {...settings}>
+          {posters.map((each, index) => (
+            <Poster
+              key={each.id || index}
+              {...each}
+              isDark={isDark}
+            />
+          ))}
+        </Slider>
+        {posters.length > settings.slidesToShow && <SliderArrows sliderRef={sliderRef} />}
+      </div>
     </div>
   );
 };

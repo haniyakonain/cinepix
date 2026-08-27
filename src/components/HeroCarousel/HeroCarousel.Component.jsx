@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import HeroSlider from "react-slick";
-import { NextArrow, PrevArrow } from "./Arrows.Component";
+import SliderArrows from "../SliderArrows/SliderArrows.Component";
 
 const HeroCarousel = () => {
 	const [images, setImages] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const mobileSliderRef = useRef(null);
+	const desktopSliderRef = useRef(null);
 
 	useEffect(() => {
 		const fetchMovies = async () => {
@@ -36,13 +38,11 @@ const HeroCarousel = () => {
 	}, []);
 
 	const settings = {
-		arrows: true,
+		arrows: false,
+		dots: false,
 		slidesToShow: 3,
 		infinite: true,
-		dots: true,
 		slidesToScroll: 1,
-		nextArrow: <NextArrow />,
-		prevArrow: <PrevArrow />,
 		autoplay: true,
 		speed: 2000,
 		autoplaySpeed: 3000,
@@ -54,7 +54,6 @@ const HeroCarousel = () => {
 					slidesToShow: 2,
 					slidesToScroll: 2,
 					infinite: true,
-					dots: true
 				}
 			},
 			{
@@ -67,9 +66,9 @@ const HeroCarousel = () => {
 		]
 	};
 
-	const renderSlider = (className, imageHeight) => (
-		<div className={className}>
-			<HeroSlider {...settings}>
+	const renderSlider = (className, imageHeight, sliderRef) => (
+		<div className={`relative group ${className}`}>
+			<HeroSlider ref={sliderRef} {...settings}>
 				{images.map((image, index) => (
 					<div className={`w-full ${imageHeight} py-3`} key={index}>
 						<img
@@ -81,6 +80,7 @@ const HeroCarousel = () => {
 					</div>
 				))}
 			</HeroSlider>
+			<SliderArrows sliderRef={sliderRef} />
 		</div>
 	);
 
@@ -91,8 +91,8 @@ const HeroCarousel = () => {
 		<div className='mt-24'>
 			{" "}
 			{/* Adjusted the margin-top to push below the navbar */}
-			{renderSlider("mt-20 lg:hidden", "h-56 md:h-80")}
-			{renderSlider("hidden lg:block mt-20", "h-96 px-2")}
+			{renderSlider("mt-20 lg:hidden", "h-56 md:h-80", mobileSliderRef)}
+			{renderSlider("hidden lg:block mt-20", "h-96 px-2", desktopSliderRef)}
 		</div>
 	);
 };

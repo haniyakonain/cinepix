@@ -132,7 +132,7 @@ const NavLinks = ({ className = "", onClose, activeSection }) => {
             className={`text-base font-medium transition-all duration-300 ${
               activeSection === link.path
                 ? "text-red-500 font-bold"
-                : "text-blue-400 hover:text-red-400"
+                : "text-gray-300 hover:text-red-400"
             }`}
           >
             {link.name}
@@ -168,7 +168,7 @@ const SearchBar = ({ className = "", onNavigate }) => {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-          className="w-full min-w-0 bg-transparent border-none focus:outline-none text-blue-300 placeholder-gray-400"
+          className="w-full min-w-0 bg-transparent border-none focus:outline-none text-gray-100 placeholder-gray-400"
           placeholder="Search for movies..."
         />
         {isSearching && <BiLoader className="animate-spin text-red-500" size={20} />}
@@ -202,7 +202,7 @@ const SearchBar = ({ className = "", onNavigate }) => {
                     />
                   )}
                   <div className="min-w-0">
-                    <h4 className="text-blue-600 font-medium truncate">{movie.title}</h4>
+                    <h4 className="text-white font-medium truncate">{movie.title}</h4>
                     <p className="text-sm text-gray-400">{movie.release_date?.split("-")[0]}</p>
                   </div>
                 </div>
@@ -271,7 +271,9 @@ const Navbar = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       className={`navbar fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-navy-900/80 backdrop-blur" : "bg-transparent"
+        isScrolled
+          ? "bg-navy-900/80 backdrop-blur border-b border-white/5 shadow-lg shadow-black/20"
+          : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-4 py-3 flex justify-between items-center gap-4">
@@ -294,7 +296,7 @@ const Navbar = () => {
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="lg:hidden text-blue-400 hover:text-red-400 transition-all duration-300"
+          className="lg:hidden text-gray-200 hover:text-red-400 transition-all duration-300"
         >
           {isMenuOpen ? <BiX size={28} /> : <BiMenu size={28} />}
         </motion.button>

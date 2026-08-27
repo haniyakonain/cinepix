@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { BiStar } from "react-icons/bi";
 
 const Poster = (props) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -13,82 +14,38 @@ const Poster = (props) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       onClick={handleClick}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      initial={{ 
-        opacity: 0, 
-        scale: 0.9,
-        boxShadow: "0 0 0px 0px rgba(0,255,255,0)"
-      }}
-      animate={{ 
-        opacity: 1, 
-        scale: 1,
-        boxShadow: isHovered 
-          ? "0 0 20px 5px rgba(0,255,255,0.5)" 
-          : "0 0 0px 0px rgba(0,255,255,0)"
-      }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 10 
-      }}
-      className="relative overflow-hidden rounded-2xl border-2 border-transparent"
+      whileHover={{ y: -6 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="relative overflow-hidden rounded-xl cursor-pointer shadow-lg shadow-black/30"
     >
-      <div className="relative overflow-hidden">
+      <div className="relative w-full aspect-[2/3] bg-navy-900">
         <motion.img
           src={`https://image.tmdb.org/t/p/w500${props.poster_path}`}
-          alt={props.original_title}
-          className="w-full h-full object-cover transition-transform duration-300"
-          initial={{ 
-            scale: 1,
-            filter: "brightness(70%)"
-          }}
-          animate={{ 
-            scale: isHovered ? 1.1 : 1,
-            filter: isHovered 
-              ? "brightness(50%) saturate(150%) hue-rotate(30deg)" 
-              : "brightness(70%)"
-          }}
+          alt={props.original_title || props.title}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+          animate={{ scale: isHovered ? 1.06 : 1 }}
           transition={{ duration: 0.3 }}
         />
-        <motion.div 
-          className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-red-900/70 via-blue-900/50 to-green-500/30"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: isHovered ? 1 : 0.7, 
-            y: isHovered ? 0 : 20,
-            backgroundColor: isHovered 
-              ? "rgba(0,255,255,0.3)" 
-              : "rgba(0,0,0,0.5)"
-          }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.h3 
-            className="text-neon-green text-xl font-bold truncate drop-shadow-[0_0_5px_rgba(0,255,0,0.7)]"
-            initial={{ 
-              y: 10, 
-              opacity: 0,
-              color: "rgba(0,255,0,0.5)"
-            }}
-            animate={{ 
-              y: isHovered ? 0 : 10, 
-              opacity: isHovered ? 1 : 0.7,
-              color: isHovered 
-                ? "rgba(0,255,0,1)" 
-                : "rgba(0,255,0,0.7)",
-              textShadow: isHovered 
-                ? "0 0 10px rgba(0,255,0,0.7)" 
-                : "0 0 0px rgba(0,255,0,0)"
-            }}
-            transition={{ duration: 0.3 }}
-          >
-            {props.original_title}
-          </motion.h3>
-        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/10 to-transparent" />
+
+        {props.vote_average > 0 && (
+          <div className="absolute top-2 right-2 flex items-center gap-1 bg-navy-900/80 text-yellow-500 text-xs font-medium px-2 py-1 rounded-full">
+            <BiStar />
+            {props.vote_average.toFixed(1)}
+          </div>
+        )}
+
+        <div className="absolute bottom-0 left-0 right-0 p-3">
+          <h3 className="text-white text-sm sm:text-base font-semibold truncate">
+            {props.original_title || props.title}
+          </h3>
+        </div>
       </div>
     </motion.div>
   );
