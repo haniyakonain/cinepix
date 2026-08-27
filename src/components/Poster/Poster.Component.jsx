@@ -45,6 +45,9 @@ const Poster = (props) => {
           <h3 className="text-white text-sm sm:text-base font-semibold truncate">
             {props.original_title || props.title}
           </h3>
+          {props.release_date && (
+            <p className="text-gray-300 text-xs mt-0.5">{props.release_date.split("-")[0]}</p>
+          )}
         </div>
       </div>
     </motion.div>

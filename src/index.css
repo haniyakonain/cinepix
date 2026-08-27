@@ -8,7 +8,7 @@ body {
   @apply bg-darkBg-800 text-white;
   background: linear-gradient(to bottom, #0a1128, #1a237e); /* Background gradient */
   min-height: 100vh;
-  font-family: 'Roboto', sans-serif; /* Ensure a more readable font */
+  font-family: 'Poppins', 'Roboto', sans-serif; /* Poppins, loaded via Google Fonts in index.html */
   color: #ffffff; /* Ensure text is white by default */
   /* Removed animation */
 }

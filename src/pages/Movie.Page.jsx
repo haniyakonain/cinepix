@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MovieLayoutHoc from "../layout/Movie.layout";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +9,7 @@ import PosterSlider from "../components/PosterSlider/PosterSlider.Component";
 import MovieHero from "../components/MovieHero/MovieHero.Component";
 import Cast from "../components/Cast/Cast.Component";
 import VideoGallery from "../components/Trailers/VideoGallery.Component";
+import SliderArrows from "../components/SliderArrows/SliderArrows.Component";
 import Loader from "../components/Loader/Loader";
 import Footer from "../components/Footer/Footer.Component";
 
@@ -112,11 +113,13 @@ const MoviePage = () => {
     navigate(`/movie/${id}`);
   };
 
+  const castSliderRef = useRef(null);
+
   const settings = {
-    arrows: true,
+    arrows: false,
     slidesToShow: 3,
     infinite: true,
-    dots: true,
+    dots: false,
     slidesToScroll: 1,
     autoplay: true,
     speed: 2000,
@@ -227,16 +230,21 @@ const MoviePage = () => {
             {/* Cast & Crew */}
             <div className="my-8">
               <h2 className="text-white-800 font-bold text-2xl mb-4">Cast and Crew</h2>
-              <Slider {...settingsCast}>
-                {movieData.cast.map((castData) => (
-                  <Cast
-                    key={castData.id}
-                    image={castData.profile_path}
-                    castName={castData.original_name}
-                    role={castData.character}
-                  />
-                ))}
-              </Slider>
+              <div className="relative group">
+                <Slider ref={castSliderRef} {...settingsCast}>
+                  {movieData.cast.map((castData) => (
+                    <Cast
+                      key={castData.id}
+                      image={castData.profile_path}
+                      castName={castData.original_name}
+                      role={castData.character}
+                    />
+                  ))}
+                </Slider>
+                {movieData.cast.length > settingsCast.slidesToShow && (
+                  <SliderArrows sliderRef={castSliderRef} />
+                )}
+              </div>
             </div>
 
             <div className="my-8">

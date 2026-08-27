@@ -33,21 +33,23 @@ const HomePage = () => {
   const [recommendedMovies, setrecommendedMovies] = useState([]);
   const { query, results: searchResults, isSearching } = useSearch();
 
-  const requestTopRatedMovies = useCallback(async () => {
+  // "Popular" (not "top rated") so the data actually matches the section's
+  // own copy ("Trending Releases" / "Popular movies to watch").
+  const requestPopularMovies = useCallback(async () => {
     try {
-      const response = await tmdbApi.get("/movie/top_rated");
+      const response = await tmdbApi.get("/movie/popular");
       setrecommendedMovies(response.data.results);
     } catch (error) {
-      console.error("Error fetching top rated movies:", error);
+      console.error("Error fetching popular movies:", error);
     }
   }, []);
 
   useEffect(() => {
-    requestTopRatedMovies();
-  }, [requestTopRatedMovies]);
+    requestPopularMovies();
+  }, [requestPopularMovies]);
 
   // Keep the trending list current without requiring a page reload.
-  useInterval(requestTopRatedMovies, MOVIES_REFRESH_INTERVAL_MS);
+  useInterval(requestPopularMovies, MOVIES_REFRESH_INTERVAL_MS);
 
   return (
     <div className={styles.gradientBg}>

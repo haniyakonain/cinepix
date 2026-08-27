@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { BiMenu, BiSearch, BiX, BiLoader } from "react-icons/bi";
@@ -41,50 +42,57 @@ const useActiveSection = () => {
   return active;
 };
 
-const MobileMenu = ({ isOpen, onClose, activeSection }) => (
-  <AnimatePresence>
-    {isOpen && (
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="fixed inset-0 z-50 bg-navy-900/98 backdrop-blur-lg lg:hidden"
-      >
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center mb-8">
-            <Link to="/">
-              <motion.img
-                whileHover={{ scale: 1.05, rotate: -5 }}
-                src="/cinepix.png"
-                alt="CinePix"
-                className="h-16"
-              />
-            </Link>
-            <motion.button
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={onClose}
-              className="text-red-500 p-2 hover:text-red-400 transition-colors duration-300"
-            >
-              <BiX size={24} />
-            </motion.button>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="flex flex-col gap-6"
-          >
-            <SearchBar className="w-full" onNavigate={onClose} />
-            <div className="flex flex-col gap-4">
-              <NavLinks className="flex-col" onClose={onClose} activeSection={activeSection} />
+// Portaled straight to document.body: the navbar itself gains a
+// backdrop-filter once scrolled (for its own frosted-glass look), and any
+// ancestor with a backdrop-filter/transform becomes the containing block for
+// position:fixed descendants — which was confining this "fixed inset-0"
+// overlay to the navbar's own ~72px-tall box instead of the full viewport.
+const MobileMenu = ({ isOpen, onClose, activeSection }) =>
+  createPortal(
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="fixed inset-0 z-50 bg-navy-900/95 backdrop-blur-lg lg:hidden"
+        >
+          <div className="container mx-auto px-4 py-6">
+            <div className="flex justify-between items-center mb-8">
+              <Link to="/">
+                <motion.img
+                  whileHover={{ scale: 1.05, rotate: -5 }}
+                  src="/cinepix.png"
+                  alt="CinePix"
+                  className="h-16"
+                />
+              </Link>
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 180 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={onClose}
+                className="text-red-500 p-2 hover:text-red-400 transition-colors duration-300"
+              >
+                <BiX size={24} />
+              </motion.button>
             </div>
-          </motion.div>
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="flex flex-col gap-6"
+            >
+              <SearchBar className="w-full" onNavigate={onClose} />
+              <div className="flex flex-col gap-4">
+                <NavLinks className="flex-col" onClose={onClose} activeSection={activeSection} />
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body
+  );
 
 const NavLinks = ({ className = "", onClose, activeSection }) => {
   const location = useLocation();
@@ -157,8 +165,8 @@ const SearchBar = ({ className = "", onNavigate }) => {
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.02 }}
-        className={`flex items-center gap-3 bg-white/10 border border-white/15 px-3 py-2.5 rounded-xl shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300 ${className} ${
-          isFocused ? "ring-2 ring-red-500 bg-white/15 border-white/25" : ""
+        className={`flex items-center gap-3 bg-navy-800/60 border border-white/20 px-3 py-2.5 rounded-xl shadow-lg shadow-black/30 backdrop-blur-md transition-all duration-300 ${className} ${
+          isFocused ? "ring-2 ring-red-500 bg-navy-800/80 border-red-500/50" : ""
         }`}
       >
         <BiSearch className={isFocused ? "text-red-500" : "text-gray-400"} />
