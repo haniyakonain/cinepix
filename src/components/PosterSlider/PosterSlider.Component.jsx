@@ -9,7 +9,10 @@ const PosterSlider = ({
   posters = [],
   title = "",
   subtitle = "",
-  isDark = false
+  // Every screen in this app is on a dark navy background, so "light theme"
+  // (black text) was never actually a valid default — it just made the
+  // title/subtitle invisible wherever a caller forgot to pass isDark.
+  isDark = true
 }) => {
   const sliderRef = useRef(null);
 

@@ -6,7 +6,7 @@ import { BiTime, BiMovie, BiStar } from "react-icons/bi";
 import DefaultlayoutHoc from "../layout/Default.layout";
 
 // Components
-import PosterSlider from "../components/PosterSlider/PosterSlider.Component";
+import Poster from "../components/Poster/Poster.Component";
 import HeroCarousel from "../components/HeroCarousel/HeroCarousel.Component";
 import SearchResultsGrid from "../components/HeroCarousel/SearchResultsGrid.Component";
 import SeatSelection from "../components/Booking/SeatSelection.Component";
@@ -78,12 +78,15 @@ const HomePage = () => {
               <BiMovie className="text-4xl text-red-500" />
               <h2 className={styles.sectionTitle}>Now Playing</h2>
             </div>
-            <PosterSlider
-              posters={recommendedMovies}
-              title="Trending Releases"
-              subtitle="Popular movies to watch"
-              isDark={false}
-            />
+            <div className="flex flex-col items-start mb-4">
+              <h3 className="text-2xl font-bold text-white">Trending Releases</h3>
+              <p className="text-sm text-gray-300">Popular movies to watch</p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+              {recommendedMovies.map((movie) => (
+                <Poster key={movie.id} {...movie} />
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>

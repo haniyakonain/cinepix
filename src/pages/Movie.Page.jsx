@@ -281,6 +281,7 @@ const MoviePage = () => {
                 title="Recommended Movies"
                 posters={movieData.recommendedMovies}
                 onMovieClick={handleMovieClick}
+                isDark
               />
             </div>
 
@@ -295,6 +296,7 @@ const MoviePage = () => {
                 title="Similar Movies"
                 posters={movieData.similarMovies}
                 onMovieClick={handleMovieClick}
+                isDark
               />
             </div>
 
