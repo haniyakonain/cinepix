@@ -9,10 +9,7 @@ const PosterSlider = ({
   posters = [],
   title = "",
   subtitle = "",
-  // Every screen in this app is on a dark navy background, so "light theme"
-  // (black text) was never actually a valid default — it just made the
-  // title/subtitle invisible wherever a caller forgot to pass isDark.
-  isDark = true
+  onMovieClick,
 }) => {
   const sliderRef = useRef(null);
 
@@ -63,16 +60,8 @@ const PosterSlider = ({
   return (
     <div className="poster-slider-container">
       <div className="flex flex-col items-start sm:ml-3 my-2">
-        <h3
-          className={`text-2xl font-bold ${
-            isDark ? "text-white" : "text-black"
-          }`}
-        >
-          {title}
-        </h3>
-        <p className={`text-sm ${isDark ? "text-white" : "text-black"}`}>
-          {subtitle}
-        </p>
+        <h3 className="text-2xl font-bold text-white">{title}</h3>
+        <p className="text-sm text-gray-300">{subtitle}</p>
       </div>
       <div className="relative group">
         <Slider ref={sliderRef} {...settings}>
@@ -80,7 +69,7 @@ const PosterSlider = ({
             <Poster
               key={each.id || index}
               {...each}
-              isDark={isDark}
+              onMovieSelect={onMovieClick}
             />
           ))}
         </Slider>

@@ -109,8 +109,8 @@ const MoviePage = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  const handleMovieClick = () => {
-    navigate(`/movie/${id}`);
+  const handleMovieClick = (movieId) => {
+    navigate(`/movie/${movieId}`);
   };
 
   const castSliderRef = useRef(null);
@@ -277,11 +277,9 @@ const MoviePage = () => {
             {/* Recommended Movies */}
             <div className="my-8">
               <PosterSlider
-                config={settings}
                 title="Recommended Movies"
                 posters={movieData.recommendedMovies}
                 onMovieClick={handleMovieClick}
-                isDark
               />
             </div>
 
@@ -292,11 +290,9 @@ const MoviePage = () => {
             {/* Similar Movies */}
             <div className="my-8">
               <PosterSlider
-                config={settings}
                 title="Similar Movies"
                 posters={movieData.similarMovies}
                 onMovieClick={handleMovieClick}
-                isDark
               />
             </div>
 

@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BiStar } from "react-icons/bi";
 
 const Poster = (props) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     if (props.onMovieSelect) {
       props.onMovieSelect(props.id);
       return;
     }
-    window.location.href = `/movie/${props.id}`;
+    // Client-side routing by default — a full navigation here reloads the
+    // whole app (loses SPA state, slower) for what should be an in-app move.
+    navigate(`/movie/${props.id}`);
   };
 
   return (
