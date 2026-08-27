@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { BiMenu, BiSearch, BiX, BiLoader } from "react-icons/bi";
-import { searchMovies } from "../../services/api.config";
+import { useSearch } from "../../context/Search.context";
 
 const SECTION_LINKS = [
   { name: "Home", path: "home" },
@@ -143,41 +143,13 @@ const NavLinks = ({ className = "", onClose, activeSection }) => {
   );
 };
 
-// Rest of the code remains the same as in the original file (SearchBar and Navbar components)
+// Search state lives in SearchContext (shared with the Home page hero) so
+// typing here can swap what the hero shows without the two components
+// needing a direct reference to each other.
 const SearchBar = ({ className = "", onNavigate }) => {
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSearch = async (query) => {
-    if (!query.trim()) {
-      setSearchResults([]);
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const results = await searchMovies(query);
-      setSearchResults(results);
-    } catch (error) {
-      console.error("Search error:", error);
-      setSearchResults([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (searchQuery) {
-        handleSearch(searchQuery);
-      }
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  const { query, setQuery, results, isSearching, clearSearch } = useSearch();
 
   return (
     <div className="relative">
@@ -192,32 +164,31 @@ const SearchBar = ({ className = "", onNavigate }) => {
         <BiSearch className={isFocused ? "text-red-500" : "text-gray-400"} />
         <input
           type="search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)}
           className="w-full min-w-0 bg-transparent border-none focus:outline-none text-blue-300 placeholder-gray-400"
           placeholder="Search for movies..."
         />
-        {isLoading && <BiLoader className="animate-spin text-red-500" size={20} />}
+        {isSearching && <BiLoader className="animate-spin text-red-500" size={20} />}
       </motion.div>
 
       <AnimatePresence>
-        {isFocused && searchResults.length > 0 && (
+        {isFocused && results.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             className="absolute top-full left-0 right-0 mt-2 bg-navy-900/95 backdrop-blur-md rounded-md shadow-xl z-50 max-h-96 overflow-y-auto"
           >
-            {searchResults.map((movie) => (
+            {results.map((movie) => (
               <motion.div
                 key={movie.id}
                 whileHover={{ backgroundColor: "rgba(239, 68, 68, 0.1)" }}
                 className="p-3 border-b border-navy-700/50 cursor-pointer"
                 onClick={() => {
-                  setSearchQuery("");
-                  setSearchResults([]);
+                  clearSearch();
                   navigate(`/movie/${movie.id}`);
                   if (onNavigate) onNavigate();
                 }}

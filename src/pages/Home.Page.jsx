@@ -8,9 +8,9 @@ import DefaultlayoutHoc from "../layout/Default.layout";
 // Components
 import PosterSlider from "../components/PosterSlider/PosterSlider.Component";
 import HeroCarousel from "../components/HeroCarousel/HeroCarousel.Component";
+import SearchResultHero from "../components/HeroCarousel/SearchResultHero.Component";
 import SeatSelection from "../components/Booking/SeatSelection.Component";
 import Reviews from "../components/Reviews/Reviews.Component";
-import LiveStatus from "../components/LiveStatus/LiveStatus.Component";
 
 // Add this import
 import tmdbApi from '../services/api.config';
@@ -18,6 +18,7 @@ import tmdbApi from '../services/api.config';
 // Components
 import ShowTimes from "../components/ShowTimes/ShowTimes.Component";
 import useInterval from "../hooks/useInterval";
+import { useSearch } from "../context/Search.context";
 
 const MOVIES_REFRESH_INTERVAL_MS = 3 * 60 * 1000;
 
@@ -30,19 +31,14 @@ const styles = {
 
 const HomePage = () => {
   const [recommendedMovies, setrecommendedMovies] = useState([]);
-  const [moviesUpdatedAt, setMoviesUpdatedAt] = useState(null);
-  const [isRefreshingMovies, setIsRefreshingMovies] = useState(false);
+  const { query, topResult, isSearching } = useSearch();
 
-  const requestTopRatedMovies = useCallback(async ({ background = false } = {}) => {
+  const requestTopRatedMovies = useCallback(async () => {
     try {
-      if (background) setIsRefreshingMovies(true);
       const response = await tmdbApi.get("/movie/top_rated");
       setrecommendedMovies(response.data.results);
-      setMoviesUpdatedAt(Date.now());
     } catch (error) {
       console.error("Error fetching top rated movies:", error);
-    } finally {
-      setIsRefreshingMovies(false);
     }
   }, []);
 
@@ -51,13 +47,19 @@ const HomePage = () => {
   }, [requestTopRatedMovies]);
 
   // Keep the trending list current without requiring a page reload.
-  useInterval(() => requestTopRatedMovies({ background: true }), MOVIES_REFRESH_INTERVAL_MS);
+  useInterval(requestTopRatedMovies, MOVIES_REFRESH_INTERVAL_MS);
 
   return (
     <div className={styles.gradientBg}>
       {/* Hero Section */}
       <div id="home" className="relative w-full">
-        <HeroCarousel />
+        {query.trim() ? (
+          <div className="mt-24 px-2 sm:px-4">
+            <SearchResultHero query={query} topResult={topResult} isSearching={isSearching} />
+          </div>
+        ) : (
+          <HeroCarousel />
+        )}
       </div>
 
       {/* Movies Section */}
@@ -70,16 +72,9 @@ const HomePage = () => {
         >
           <div className={styles.neonGlow}></div>
           <div className="relative z-10">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-              <div className="flex items-center gap-3">
-                <BiMovie className="text-4xl text-red-500" />
-                <h2 className={styles.sectionTitle}>Now Playing</h2>
-              </div>
-              <LiveStatus
-                lastUpdated={moviesUpdatedAt}
-                isRefreshing={isRefreshingMovies}
-                onRefresh={() => requestTopRatedMovies({ background: true })}
-              />
+            <div className="flex items-center gap-3 mb-6">
+              <BiMovie className="text-4xl text-red-500" />
+              <h2 className={styles.sectionTitle}>Now Playing</h2>
             </div>
             <PosterSlider
               posters={recommendedMovies}

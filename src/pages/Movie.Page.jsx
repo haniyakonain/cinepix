@@ -7,8 +7,11 @@ import { FaCcVisa, FaCcApplePay } from "react-icons/fa";
 import PosterSlider from "../components/PosterSlider/PosterSlider.Component";
 import MovieHero from "../components/MovieHero/MovieHero.Component";
 import Cast from "../components/Cast/Cast.Component";
+import VideoGallery from "../components/Trailers/VideoGallery.Component";
 import Loader from "../components/Loader/Loader";
 import Footer from "../components/Footer/Footer.Component";
+
+const VIDEO_TYPE_PRIORITY = ["Trailer", "Teaser", "Clip", "Featurette"];
 
 const MoviePage = () => {
   const { id } = useParams();
@@ -18,6 +21,7 @@ const MoviePage = () => {
     cast: [],
     similarMovies: [],
     recommendedMovies: [],
+    videos: [],
     movie: {},
   });
   const [isLoading, setIsLoading] = useState(true);
@@ -26,25 +30,32 @@ const MoviePage = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        
-        // Fetch movie details, cast, similar and recommended movies in parallel
+
+        // Fetch movie details, cast, similar, recommended movies and videos in parallel
         const [
           castResponse,
           similarResponse,
           recommendedResponse,
           movieResponse,
+          videosResponse,
         ] = await Promise.all([
           axios.get(`/movie/${id}/credits`),
           axios.get(`/movie/${id}/similar`),
           axios.get(`/movie/${id}/recommendations`),
           axios.get(`/movie/${id}`),
+          axios.get(`/movie/${id}/videos`),
         ]);
+
+        const videos = videosResponse.data.results
+          .filter((video) => video.site === "YouTube" && VIDEO_TYPE_PRIORITY.includes(video.type))
+          .sort((a, b) => VIDEO_TYPE_PRIORITY.indexOf(a.type) - VIDEO_TYPE_PRIORITY.indexOf(b.type));
 
         // Save the fetched data into the state
         setMovieData({
           cast: castResponse.data.cast,
           similarMovies: similarResponse.data.results,
           recommendedMovies: recommendedResponse.data.results,
+          videos,
           movie: movieResponse.data,
         });
 
@@ -164,6 +175,20 @@ const MoviePage = () => {
             <div className="my-8">
               <hr />
             </div>
+
+            {/* Trailers & Videos */}
+            {movieData.videos.length > 0 && (
+              <>
+                <div className="my-8">
+                  <h2 className="text-white-800 font-bold text-2xl mb-4">Trailers &amp; Videos</h2>
+                  <VideoGallery videos={movieData.videos} movieTitle={movieData.movie.original_title} />
+                </div>
+
+                <div className="my-8">
+                  <hr />
+                </div>
+              </>
+            )}
 
             {/* Recommended Movies */}
             <div className="my-8">
