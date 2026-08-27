@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { BiTime, BiMovie, BiStar } from "react-icons/bi";
 
@@ -10,12 +10,16 @@ import PosterSlider from "../components/PosterSlider/PosterSlider.Component";
 import HeroCarousel from "../components/HeroCarousel/HeroCarousel.Component";
 import SeatSelection from "../components/Booking/SeatSelection.Component";
 import Reviews from "../components/Reviews/Reviews.Component";
+import LiveStatus from "../components/LiveStatus/LiveStatus.Component";
 
 // Add this import
 import tmdbApi from '../services/api.config';
 
 // Components
 import ShowTimes from "../components/ShowTimes/ShowTimes.Component";
+import useInterval from "../hooks/useInterval";
+
+const MOVIES_REFRESH_INTERVAL_MS = 3 * 60 * 1000;
 
 const styles = {
   gradientBg: "bg-gradient-to-b from-navy-900 via-navy-800 to-navy-900",
@@ -26,18 +30,28 @@ const styles = {
 
 const HomePage = () => {
   const [recommendedMovies, setrecommendedMovies] = useState([]);
+  const [moviesUpdatedAt, setMoviesUpdatedAt] = useState(null);
+  const [isRefreshingMovies, setIsRefreshingMovies] = useState(false);
+
+  const requestTopRatedMovies = useCallback(async ({ background = false } = {}) => {
+    try {
+      if (background) setIsRefreshingMovies(true);
+      const response = await tmdbApi.get("/movie/top_rated");
+      setrecommendedMovies(response.data.results);
+      setMoviesUpdatedAt(Date.now());
+    } catch (error) {
+      console.error("Error fetching top rated movies:", error);
+    } finally {
+      setIsRefreshingMovies(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const requestTopRatedMovies = async () => {
-      try {
-        const response = await tmdbApi.get("/movie/top_rated");
-        setrecommendedMovies(response.data.results);
-      } catch (error) {
-        console.error("Error fetching top rated movies:", error);
-      }
-    };
     requestTopRatedMovies();
-  }, []);
+  }, [requestTopRatedMovies]);
+
+  // Keep the trending list current without requiring a page reload.
+  useInterval(() => requestTopRatedMovies({ background: true }), MOVIES_REFRESH_INTERVAL_MS);
 
   return (
     <div className={styles.gradientBg}>
@@ -47,7 +61,7 @@ const HomePage = () => {
       </div>
 
       {/* Movies Section */}
-      <div id="movies" className="container mx-auto px-4 py-16">
+      <div id="movies" className="container mx-auto px-4 py-10 sm:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,9 +70,16 @@ const HomePage = () => {
         >
           <div className={styles.neonGlow}></div>
           <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-6">
-              <BiMovie className="text-4xl text-red-500" />
-              <h2 className={styles.sectionTitle}>Now Playing</h2>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <div className="flex items-center gap-3">
+                <BiMovie className="text-4xl text-red-500" />
+                <h2 className={styles.sectionTitle}>Now Playing</h2>
+              </div>
+              <LiveStatus
+                lastUpdated={moviesUpdatedAt}
+                isRefreshing={isRefreshingMovies}
+                onRefresh={() => requestTopRatedMovies({ background: true })}
+              />
             </div>
             <PosterSlider
               posters={recommendedMovies}
@@ -71,7 +92,7 @@ const HomePage = () => {
       </div>
 
       {/* Showtimes Section */}
-      <div id="showtimes" className="container mx-auto px-4 py-16">
+      <div id="showtimes" className="container mx-auto px-4 py-10 sm:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -95,7 +116,7 @@ const HomePage = () => {
       </div>
 
       {/* Booking Section */}
-      <div id="booking" className="container mx-auto px-4 py-16">
+      <div id="booking" className="container mx-auto px-4 py-10 sm:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,7 +139,7 @@ const HomePage = () => {
       </div>
 
       {/* Reviews Section */}
-      <div id="reviews" className="container mx-auto px-4 py-16">
+      <div id="reviews" className="container mx-auto px-4 py-10 sm:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -140,7 +161,7 @@ const HomePage = () => {
       </div>
 
       {/* About Section */}
-      <div id="about" className="container mx-auto px-4 py-16">
+      <div id="about" className="container mx-auto px-4 py-10 sm:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
